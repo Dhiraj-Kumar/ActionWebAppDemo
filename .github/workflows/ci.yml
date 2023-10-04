@@ -43,4 +43,22 @@ jobs:
 
       - name: Running Tests
         run: dotnet test --no-restore
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build & Push Docker Image to Docker Hub
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: dhiraj2001/cyberapp
+          tags: latest
+          registry: docker.io
+          dockerfile: CyberShop/Dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
     
